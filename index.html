@@ -1,6 +1,6 @@
 <!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#2a2118"><link rel="icon" href="icon-192.png"><title>حجز · Booking</title><style>
-*{box-sizing:border-box}html,body{overscroll-behavior-y:contain}[hidden]{display:none!important}.linkbtn{display:block;text-align:center;text-decoration:none;font-weight:700;padding:15px;border-radius:14px;border:1px solid #cdbfa8;background:#fff;color:#2a2118;margin:5px 0}.hint{background:#fff3d6;border:1px solid #e0a020;border-radius:12px;padding:10px 12px;margin:0 0 10px;font-size:15px}body{font-family:system-ui,Segoe UI,Tahoma,sans-serif;margin:0;background:#f6f1e8;color:#2a2118;font-size:18px}
+*{box-sizing:border-box}html,body{overscroll-behavior-y:contain}[hidden]{display:none!important}.linkbtn.paperbtn{background:#b8894a;color:#fff;border:0;font-size:19px;padding:17px;margin:4px 0 12px}.linkbtn{display:block;text-align:center;text-decoration:none;font-weight:700;padding:15px;border-radius:14px;border:1px solid #cdbfa8;background:#fff;color:#2a2118;margin:5px 0}.hint{background:#fff3d6;border:1px solid #e0a020;border-radius:12px;padding:10px 12px;margin:0 0 10px;font-size:15px}body{font-family:system-ui,Segoe UI,Tahoma,sans-serif;margin:0;background:#f6f1e8;color:#2a2118;font-size:18px}
 main{max-width:520px;margin:0 auto;padding:14px 14px 90px}h1{font-size:20px;margin:6px 0}
 input,button{font:inherit;width:100%;padding:15px;border-radius:14px;border:1px solid #cdbfa8;background:#fff;margin:5px 0}
 button{background:#b8894a;color:#fff;border:0;font-weight:700}button.alt{background:#fff;color:#2a2118;border:1px solid #cdbfa8}button:disabled{opacity:.5}
@@ -18,6 +18,7 @@ label{display:block;font-size:14px;color:#6b5d4b;margin-top:8px}.row{display:fle
 <div id="gate" hidden><p>اكتب الكود الظاهر على كمبيوتر الدكتور · Enter the code shown on the doctor's computer</p>
 <input id="code" inputmode="numeric" maxlength="6" placeholder="000000" autocomplete="off"><button id="go">دخول · Enter</button></div>
 <div id="app">
+<label class="linkbtn paperbtn" for="paper">📷 صوّر ورقة الحجوزات وابعتها · Photo of a paper list</label><input id="paper" type="file" accept="image/*" capture="environment" hidden>
 <h1>حجز جديد · New booking</h1>
 <label for="name">الاسم · Name</label><input id="name" autocomplete="off">
 <div class="row"><div><label for="phone">الموبايل · Mobile</label><input id="phone" inputmode="numeric" maxlength="11" autocomplete="off"></div>
@@ -27,7 +28,6 @@ label{display:block;font-size:14px;color:#6b5d4b;margin-top:8px}.row{display:fle
 <button id="save">حفظ · Save</button>
 <h2>لم تُرسل بعد · Waiting to send</h2><div id="queue"></div>
 <button class="alt" id="sendNow">إرسال الآن · Send now</button>
-<label class="alt linkbtn" for="paper">📷 صوّر ورقة حجوزات · Photo of a paper list</label><input id="paper" type="file" accept="image/*" capture="environment" hidden>
 <a class="alt linkbtn" id="offlineCopy" hidden>نسخة تشتغل من غير نت (ثبّتها على الشاشة) · Offline copy</a>
 <button class="alt" id="share">إرسال القايمة برسالة · Send the list as a message</button>
 <h2>اتبعتت (آخر 7 أيام) · Sent (last 7 days)</h2><div id="sent"></div>
