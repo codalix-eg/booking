@@ -84,7 +84,7 @@ $('save').onclick=function(){var name=$('name').value.trim(),phone=$('phone').va
  toast('اتحفظ · Saved: '+name);$('name').value='';$('phone').value='';$('age').value='';time='';render();flush()};
 function tfetch(url,opt,ms){var c=new AbortController(),t=setTimeout(function(){c.abort()},ms||8000);opt=opt||{};opt.signal=c.signal;return fetch(url,opt).then(function(r){clearTimeout(t);return r},function(e){clearTimeout(t);throw e})}
 var fresh=false;window.addEventListener('beforeunload',function(e){if(!leaving&&!HOSTED&&(!online||queue.length)){e.preventDefault();e.returnValue=''}});
-function counts(){tfetch('/booking/counts',{cache:'no-store'},6000).then(function(r){if(r.status===401){loggedOut=true;showGate();return null}online=true;if(!fresh){fresh=true;fetch('/book',{cache:'reload'}).catch(function(){})}return r.json()}).then(function(j){if(j){cfg=j;store('bk_cfg',cfg);loggedOut=false;$('gate').hidden=true;$('app').hidden=false}render()}).catch(function(){online=false;render()})}
+function counts(){tfetch('/booking/counts',{cache:'no-store'},6000).then(function(r){if(r.status===401){loggedOut=true;showGate();return null}online=true;if(!fresh){fresh=true;fetch(location.pathname,{cache:'reload'}).catch(function(){})}return r.json()}).then(function(j){if(j){cfg=j;store('bk_cfg',cfg);loggedOut=false;$('gate').hidden=true;$('app').hidden=false}render()}).catch(function(){online=false;render()})}
 function showGate(){$('gate').hidden=false}
 var busy=false;
 function flush(){if(busy)return;if(!queue.length){if(goBack([]))return;counts();return}busy=true;
