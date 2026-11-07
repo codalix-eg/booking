@@ -27,6 +27,7 @@ label{display:block;font-size:14px;color:#6b5d4b;margin-top:8px}.row{display:fle
 <button id="save">حفظ · Save</button>
 <h2>لم تُرسل بعد · Waiting to send</h2><div id="queue"></div>
 <button class="alt" id="sendNow">إرسال الآن · Send now</button>
+<label class="alt linkbtn" for="paper">📷 صوّر ورقة حجوزات · Photo of a paper list</label><input id="paper" type="file" accept="image/*" capture="environment" hidden>
 <a class="alt linkbtn" id="offlineCopy" hidden>نسخة تشتغل من غير نت (ثبّتها على الشاشة) · Offline copy</a>
 <button class="alt" id="share">إرسال القايمة برسالة · Send the list as a message</button>
 <h2>اتبعتت (آخر 7 أيام) · Sent (last 7 days)</h2><div id="sent"></div>
@@ -92,6 +93,16 @@ function flush(){if(busy)return;if(!queue.length){if(goBack([]))return;counts();
   var ok={};(j.accepted||[]).forEach(function(u){ok[u]=1});var now=Date.now();
   queue.forEach(function(r){if(ok[r.uid]){r.sentAt=now;sent.unshift(r)}});queue=queue.filter(function(r){return !ok[r.uid]});sent=sent.slice(0,200);
   store('bk_q',queue);store('bk_sent',sent);toast('اتبعت · Sent');if(goBack(Object.keys(ok)))return;counts()}).catch(function(){online=false;render()}).then(function(){busy=false})}
+function shrink(file){return new Promise(function(ok,bad){var img=new Image(),url=URL.createObjectURL(file);img.onload=function(){var k=Math.min(1,1800/Math.max(img.width,img.height)),c=document.createElement('canvas');c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);c.getContext('2d').drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(url);c.toBlob(function(b){b?ok(b):bad(0)},'image/jpeg',0.85)};img.onerror=function(){bad(0)};img.src=url})}
+$('paper').onchange=function(){var f=this.files&&this.files[0];this.value='';if(!f)return;
+ shrink(f).then(function(blob){
+  if(HOSTED){var file=new File([blob],'booking-list.jpg',{type:'image/jpeg'});
+   if(navigator.canShare&&navigator.canShare({files:[file]})){navigator.share({files:[file],text:'ورقة حجوزات · Booking list'}).catch(function(){})}
+   else toast('ابعت الصورة للسكرتارية واتساب من معرض الصور · Send the photo by WhatsApp');return}
+  toast('بيتبعت… · Sending…');
+  return tfetch('/booking/photo',{method:'POST',headers:{'Content-Type':'application/octet-stream'},body:blob},30000).then(function(r){
+   if(r.status===401){showGate();throw 0}if(!r.ok)throw 1;toast('الصورة اتبعتت للكمبيوتر · Photo sent')})
+ }).catch(function(e){if(e!==0)toast('الصورة ما اتبعتتش · Photo not sent')})};
 function sendToClinic(){if(!queue.length){toast('مفيش حاجة · Nothing to send');return}
  if(!CLINIC){toast('افتح صفحة الحجز من شبكة العيادة مرة الأول · Open the booking page on the clinic network once first');return}
  leaving=true;location.href=CLINIC+'/book#import='+encodeURIComponent(JSON.stringify(queue))+'&back='+encodeURIComponent(location.origin+location.pathname)}
