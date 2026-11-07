@@ -1,5 +1,5 @@
 // Keeps the booking page on the phone: served from the phone first, refreshed from the network when there is one.
-const CACHE = 'booking-ba41583a32';
+const CACHE = 'booking-d863ea72bf';
 const FILES = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
 self.addEventListener('install', (e) => { e.waitUntil(caches.open(CACHE).then((c) => c.addAll(FILES))); self.skipWaiting(); });
 self.addEventListener('activate', (e) => { e.waitUntil(caches.keys().then((keys) => Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k))))); self.clients.claim(); });

@@ -58,6 +58,7 @@ function render(){
  $('barText').innerHTML=n?'لم تُرسل: <b>'+n+'</b> · Unsent':'كله اتبعت · All sent';
  $('net').textContent=online?'● متصل · online':(HOSTED?'● بتشتغل من غير نت · offline copy':'○ غير متصل · offline');$('offHint').hidden=online||HOSTED;
  var c=cfg&&cfg.clinic?cfg.clinic:{days:[0,1,2,3,4,5,6],from:'16:00',to:'22:00',slot:30,limit:0};
+ if(HOSTED&&!(cfg&&cfg.clinic)){$('days').innerHTML='<div class="hint">افتح النسخة دي من زرار نسخة تشتغل من غير نت في صفحة العيادة عشان تعرف أيام الشغل · Open this copy from the clinic page to get the working days</div>';$('times').innerHTML='';}else{
  var html='',base=new Date(),shown=0;
  for(var i=0;i<45&&shown<14;i++){var d=new Date(base.getFullYear(),base.getMonth(),base.getDate()+i,12);
   if(c.days.indexOf(d.getDay())<0)continue;shown++;var k=key(d),used=(cfg&&cfg.days&&cfg.days[k]||0)+queue.filter(function(q){return q.day===k}).length,full=c.limit>0&&used>=c.limit;
@@ -66,7 +67,7 @@ function render(){
  var t='',m=function(x){return +x.slice(0,2)*60+ +x.slice(3,5)};
  for(var s=m(c.from),e=m(c.to),g=0;s<e&&g<48;s+=c.slot,g++){var hh=Math.floor(s/60),mm=s%60,v=String(hh).padStart(2,'0')+':'+String(mm).padStart(2,'0'),h12=hh%12||12;
   t+='<button type="button" class="chip'+(time===v?' on':'')+'" data-time="'+v+'">'+h12+':'+String(mm).padStart(2,'0')+(hh>=12?' م':' ص')+'</button>'}
- $('times').innerHTML=t;
+ $('times').innerHTML=t;}
  $('queue').innerHTML=queue.map(function(r,i){return '<div class="item"><span>'+esc(r.name)+' · '+esc(String(r.day).slice(5))+' '+esc(r.time||'')+'</span><button class="alt" data-del="'+i+'">✕</button></div>'}).join('')||'<div class="item">—</div>';
  $('sent').innerHTML=sent.map(function(r,i){return '<div class="item"><span><span class="ok">✓</span> '+esc(r.name)+' · '+esc(String(r.day).slice(5))+' '+esc(r.time||'')+'</span><button class="alt" data-again="'+i+'">إعادة</button></div>'}).join('')||'<div class="item">—</div>';
 }
@@ -97,7 +98,8 @@ function sendToClinic(){if(!queue.length){toast('مفيش حاجة · Nothing to
 if(HOSTED){counts=function(){online=false;render()};flush=function(){render()};$('sendNow').textContent='في العيادة؟ ابعت للكمبيوتر · At the clinic? Send';$('sendNow').onclick=sendToClinic;
  try{var lk=document.createElement('link');lk.rel='manifest';lk.href='manifest.webmanifest';document.head.appendChild(lk)}catch(e){}
  if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(function(){})}
-else{$('sendNow').onclick=flush;if(ONLINE_URL.indexOf('https://')===0){var oc=$('offlineCopy');oc.href=ONLINE_URL+'#clinic='+encodeURIComponent(location.origin);oc.hidden=false}}
+else{$('sendNow').onclick=flush;if(/^https?:\/\//.test(ONLINE_URL)){var oc=$('offlineCopy');oc.href=ONLINE_URL+'#clinic='+encodeURIComponent(location.origin);oc.hidden=false;
+ oc.onclick=function(){leaving=true;oc.href=ONLINE_URL+'#clinic='+encodeURIComponent(location.origin)+(cfg?'&cfg='+encodeURIComponent(JSON.stringify(cfg)):'')}}}
 $('share').onclick=function(){if(!queue.length){toast('مفيش حاجة · Nothing to send');return}var text=queue.map(line).join('\n');
  if(navigator.share){navigator.share({text:text}).catch(function(){})}else{location.href='https://wa.me/?text='+encodeURIComponent(text)}};
 $('go').onclick=function(){tfetch('/login',{method:'POST',body:$('code').value.trim()},8000).then(function(r){if(r.ok){$('gate').hidden=true;flush()}else alert(r.status===429?'محاولات كتير، استنى دقيقة':'الكود غلط · Wrong code')})};
