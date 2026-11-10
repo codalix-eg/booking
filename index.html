@@ -1,37 +1,73 @@
 <!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#2a2118"><link rel="icon" href="icon-192.png"><title>حجز · Booking</title><style>
-*{box-sizing:border-box}html,body{overscroll-behavior-y:contain}[hidden]{display:none!important}.linkbtn.paperbtn{background:#b8894a;color:#fff;border:0;font-size:19px;padding:17px;margin:4px 0 12px}.linkbtn{display:block;text-align:center;text-decoration:none;font-weight:700;padding:15px;border-radius:14px;border:1px solid #cdbfa8;background:#fff;color:#2a2118;margin:5px 0}.hint{background:#fff3d6;border:1px solid #e0a020;border-radius:12px;padding:10px 12px;margin:0 0 10px;font-size:15px}body{font-family:system-ui,Segoe UI,Tahoma,sans-serif;margin:0;background:#f6f1e8;color:#2a2118;font-size:18px}
-main{max-width:520px;margin:0 auto;padding:14px 14px 90px}h1{font-size:20px;margin:6px 0}
-input,button{font:inherit;width:100%;padding:15px;border-radius:14px;border:1px solid #cdbfa8;background:#fff;margin:5px 0}
-button{background:#b8894a;color:#fff;border:0;font-weight:700}button.alt{background:#fff;color:#2a2118;border:1px solid #cdbfa8}button:disabled{opacity:.5}
-.bar{position:sticky;top:0;z-index:5;display:flex;gap:8px;align-items:center;justify-content:space-between;background:#2a2118;color:#fff;padding:10px 14px;border-radius:0 0 14px 14px;margin:0 -14px 10px;font-size:16px}
-.bar b{font-size:20px}.bar.warn{background:#b4402f}.chips{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0}
-.chip{width:auto;padding:10px 13px;background:#fff;color:#2a2118;border:1px solid #cdbfa8;font-weight:600;font-size:16px;border-radius:12px;margin:0}
-.chip.on{background:#b8894a;color:#fff;border-color:#b8894a}.chip small{display:block;font-weight:500;font-size:12px;opacity:.8}.chip.full{border-color:#b4402f}.chip.full small{color:#b4402f;font-weight:700}.chip.on.full small{color:#fff}
-label{display:block;font-size:14px;color:#6b5d4b;margin-top:8px}.row{display:flex;gap:8px}.row>*{flex:1}
-.item{background:#fff;border-radius:12px;padding:10px 12px;margin:6px 0;font-size:15px;display:flex;justify-content:space-between;gap:8px;align-items:center}
-.item button{width:auto;padding:6px 12px;margin:0;font-size:14px}.ok{color:#3a8f5b;font-weight:700}h2{font-size:16px;margin:18px 0 4px;color:#6b5d4b}
-#toast{position:fixed;bottom:16px;left:14px;right:14px;max-width:492px;margin:0 auto;background:#3a8f5b;color:#fff;padding:14px;border-radius:14px;display:none;font-weight:700;text-align:center}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{overscroll-behavior-y:contain}[hidden]{display:none!important}
+:root{--ink:#0F1E24;--muted:#5E6E73;--line:#DCE5E3;--bg:#F3F6F5;--card:#fff;--mint:#1FA884;--mint-d:#16876A;--mint-l:#E3F5EF;--warn:#C2452D;--warn-l:#FCEDE9;--sun:#F08A24}
+body{font-family:system-ui,"Segoe UI",Tahoma,sans-serif;margin:0;background:var(--bg);color:var(--ink);font-size:18px;line-height:1.45}
+main{max-width:520px;margin:0 auto;padding:0 16px 40px}
+input,button{font:inherit;color:inherit}
+input{width:100%;padding:15px 16px;border-radius:14px;border:1.5px solid var(--line);background:var(--card);margin:6px 0;font-size:20px;outline:0}
+input:focus{border-color:var(--mint);box-shadow:0 0 0 4px var(--mint-l)}
+button{cursor:pointer;border:0;font-weight:700;border-radius:14px}
+.top{position:sticky;top:0;z-index:5;background:var(--bg);padding:12px 0 8px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:19px;white-space:nowrap}.brand img{width:34px;height:34px;border-radius:10px}
+#net{font-size:13px;font-weight:600;color:var(--muted);display:flex;align-items:center;gap:6px;white-space:nowrap}#net::before{content:"";width:9px;height:9px;border-radius:50%;background:#B9C4C2}#net.on{color:var(--mint-d)}#net.on::before{background:var(--mint)}
+.bar{display:flex;align-items:center;gap:12px;background:var(--mint-l);color:var(--mint-d);border-radius:16px;padding:12px 14px;margin:4px 0 14px;font-weight:700;font-size:16px}
+.bar::before{content:"✓";display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--mint);color:#fff;flex:none}
+.bar.warn{background:var(--warn-l);color:var(--warn)}.bar.warn::before{content:"!";background:var(--warn)}.bar b{font-size:20px}
+.hint{background:#FFF6E6;border:1px solid #F3C979;border-radius:14px;padding:10px 12px;margin:0 0 12px;font-size:15px}
+.big{display:flex;align-items:center;gap:14px;width:100%;text-align:start;padding:20px 18px;margin:0 0 12px;font-size:21px;border-radius:20px}
+.big i{font-style:normal;display:grid;place-items:center;width:46px;height:46px;border-radius:14px;flex:none;font-size:24px}
+.big small{display:block;font-size:14px;font-weight:500;opacity:.8}
+.big.new{background:var(--mint);color:#fff;box-shadow:0 10px 24px -12px rgba(31,168,132,.8)}.big.new i{background:rgba(255,255,255,.2)}
+.big.photo{background:var(--card);border:1.5px solid var(--line);color:var(--ink);font-weight:700;margin-top:0}.big.photo i{background:#FFF1E2;color:var(--sun)}
+.big:active{transform:scale(.985)}
+h2{font-size:15px;margin:22px 2px 8px;color:var(--muted);font-weight:700}
+.days{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 6px;scrollbar-width:none}.days::-webkit-scrollbar{display:none}
+.dc{flex:none;background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:8px 12px;text-align:center;min-width:76px;font-weight:600;font-size:14px}
+.dc b{display:block;font-size:22px;color:var(--ink)}.dc.full{border-color:var(--warn)}.dc.full b{color:var(--warn)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0}
+.chip{padding:11px 13px;background:var(--card);border:1.5px solid var(--line);font-weight:600;font-size:16px;border-radius:12px}
+.chip small{display:block;font-weight:500;font-size:12px;color:var(--muted)}
+.chip.on{background:var(--mint);color:#fff;border-color:var(--mint)}.chip.on small{color:#fff}.chip.full{border-color:var(--warn)}.chip.full small{color:var(--warn);font-weight:700}.chip.on.full small{color:#fff}
+label{display:block;font-size:14px;color:var(--muted);margin-top:12px;font-weight:600}.row{display:flex;gap:10px}.row>*{flex:1}.row>.age{flex:0 0 32%}
+.item{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:11px 12px;margin:6px 0;font-size:16px;display:flex;justify-content:space-between;gap:8px;align-items:center}
+.item small{color:var(--muted);font-size:14px}.item button{padding:7px 12px;font-size:14px;background:var(--bg);border:1px solid var(--line)}.ok{color:var(--mint-d);font-weight:800}
+.empty{color:var(--muted);font-size:15px;padding:6px 2px}
+.more{display:grid;gap:8px;margin-top:18px}
+.ghost{display:block;width:100%;text-align:center;text-decoration:none;font-weight:700;font-size:16px;padding:14px;border-radius:14px;border:1.5px solid var(--line);background:var(--card);color:var(--ink)}
+.form-head{position:sticky;top:0;z-index:5;background:var(--bg);display:flex;align-items:center;gap:10px;padding:12px 0 6px}
+.form-head h1{font-size:21px;margin:0}.back{background:var(--card);border:1.5px solid var(--line);width:46px;height:46px;font-size:22px;flex:none}
+.savebar{position:sticky;bottom:0;background:linear-gradient(transparent,var(--bg) 30%);padding:18px 0 14px;margin-top:10px}
+.save{width:100%;background:var(--mint);color:#fff;font-size:21px;padding:17px;box-shadow:0 10px 24px -12px rgba(31,168,132,.8)}
+.gate{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px;margin-top:10px}.gate p{margin:0 0 8px}.gate input{text-align:center;letter-spacing:.3em;font-size:26px}.gate button{width:100%;background:var(--mint);color:#fff;padding:15px;margin-top:6px}
+#toast{position:fixed;bottom:18px;left:16px;right:16px;max-width:488px;margin:0 auto;background:var(--ink);color:#fff;padding:14px;border-radius:14px;display:none;font-weight:700;text-align:center;z-index:9}
 </style></head><body><main>
-<div class="bar" id="bar"><span id="barText"></span><span id="net"></span></div>
+<div id="home">
+<div class="top"><div class="brand"><img src="icon-192.png" alt="" onerror="this.remove()">حجز العيادة</div><span id="net"></span></div>
+<div class="bar" id="bar"><span id="barText"></span></div>
 <div class="hint" id="offHint" hidden>بره شبكة العيادة: متعملش Refresh. لو الصفحة اختفت، اقفل التاب وافتحها تاني من الأيقونة؛ الحجوزات محفوظة.</div>
-<div id="gate" hidden><p>اكتب الكود الظاهر على كمبيوتر الدكتور · Enter the code shown on the doctor's computer</p>
+<div id="gate" class="gate" hidden><p>اكتب الكود الظاهر على كمبيوتر الدكتور · Enter the code shown on the doctor's computer</p>
 <input id="code" inputmode="numeric" maxlength="6" placeholder="000000" autocomplete="off"><button id="go">دخول · Enter</button></div>
 <div id="app">
-<label class="linkbtn paperbtn" for="paper">📷 صوّر ورقة الحجوزات وابعتها · Photo of a paper list</label><input id="paper" type="file" accept="image/*" capture="environment" hidden>
-<h1>حجز جديد · New booking</h1>
+<button class="big new" id="newBtn" type="button"><i>+</i><span>حجز جديد<small>New booking</small></span></button>
+<label class="big photo" for="paper"><i>📷</i><span>صوّر ورقة الحجوزات<small>Photo of a paper list</small></span></label><input id="paper" type="file" accept="image/*" capture="environment" hidden>
+<h2>الأيام الجاية · Next days</h2><div class="days" id="dayCounts"></div>
+<h2>لسه ما اتبعتش · Waiting to send</h2><div id="queue"></div>
+<h2>اتبعت (آخر 7 أيام) · Sent (last 7 days)</h2><div id="sent"></div>
+<div class="more"><button class="ghost" id="sendNow" type="button">إرسال الآن · Send now</button>
+<a class="ghost" id="offlineCopy" hidden>نسخة تشتغل من غير نت (ثبّتها على الشاشة) · Offline copy</a>
+<button class="ghost" id="share" type="button">إرسال القايمة برسالة · Send the list as a message</button></div>
+</div></div>
+<div id="form" hidden>
+<div class="form-head"><button class="back" id="backBtn" type="button" aria-label="رجوع">→</button><h1>حجز جديد · New booking</h1></div>
 <label for="name">الاسم · Name</label><input id="name" autocomplete="off">
-<div class="row"><div><label for="phone">الموبايل · Mobile</label><input id="phone" inputmode="numeric" maxlength="11" autocomplete="off"></div>
-<div><label for="age">السن · Age</label><input id="age" inputmode="numeric" maxlength="3" autocomplete="off"></div></div>
+<div class="row"><div><label for="phone">الموبايل · Mobile</label><input id="phone" inputmode="numeric" maxlength="11" autocomplete="off" dir="ltr"></div>
+<div class="age"><label for="age">السن · Age</label><input id="age" inputmode="numeric" maxlength="3" autocomplete="off"></div></div>
 <label>اليوم · Day</label><div class="chips" id="days"></div>
-<label>الساعة · Time</label><div class="chips" id="times"></div>
-<button id="save">حفظ · Save</button>
-<h2>لم تُرسل بعد · Waiting to send</h2><div id="queue"></div>
-<button class="alt" id="sendNow">إرسال الآن · Send now</button>
-<a class="alt linkbtn" id="offlineCopy" hidden>نسخة تشتغل من غير نت (ثبّتها على الشاشة) · Offline copy</a>
-<button class="alt" id="share">إرسال القايمة برسالة · Send the list as a message</button>
-<h2>اتبعتت (آخر 7 أيام) · Sent (last 7 days)</h2><div id="sent"></div>
-</div><div id="toast"></div>
+<label>الساعة (لو محددة) · Time (optional)</label><div class="chips" id="times"></div>
+<div class="savebar"><button class="save" id="save" type="button">حفظ · Save</button></div>
+</div>
+<div id="toast"></div>
 <script>
 var $=function(id){return document.getElementById(id)};
 var WEEK=7*24*3600*1000;
@@ -56,36 +92,38 @@ function purge(){var now=Date.now();sent=sent.filter(function(s){return now-s.se
 function line(r){return [r.name,r.phone,r.age||0,r.day,r.time||'',r.uid].join(' | ')}
 function render(){
  var n=queue.length,bar=$('bar');bar.className='bar'+(n?' warn':'');
- $('barText').innerHTML=n?'لم تُرسل: <b>'+n+'</b> · Unsent':'كله اتبعت · All sent';
- $('net').textContent=online?'● متصل · online':(HOSTED?'● بتشتغل من غير نت · offline copy':'○ غير متصل · offline');$('offHint').hidden=online||HOSTED;
+ $('barText').innerHTML=n?'<b>'+n+'</b> لسه ما اتبعتش · Unsent':'كله اتبعت · All sent';
+ $('net').className=online?'on':'';$('net').textContent=online?'متصل':(HOSTED?'نسخة من غير نت':'مش متصل');$('offHint').hidden=online||HOSTED;
  var c=cfg&&cfg.clinic?cfg.clinic:{days:[0,1,2,3,4,5,6],from:'16:00',to:'22:00',slot:30,limit:0};
- if(HOSTED&&!(cfg&&cfg.clinic)){$('days').innerHTML='<div class="hint">افتح النسخة دي من زرار نسخة تشتغل من غير نت في صفحة العيادة عشان تعرف أيام الشغل · Open this copy from the clinic page to get the working days</div>';$('times').innerHTML='';}else{
- var html='',base=new Date(),shown=0;
+ if(HOSTED&&!(cfg&&cfg.clinic)){$('days').innerHTML='<div class="hint">افتح النسخة دي من زرار نسخة تشتغل من غير نت في صفحة العيادة عشان تعرف أيام الشغل · Open this copy from the clinic page to get the working days</div>';$('times').innerHTML='';$('dayCounts').innerHTML='<div class="empty">—</div>';}else{
+ var html='',dc='',base=new Date(),shown=0;
  for(var i=0;i<45&&shown<14;i++){var d=new Date(base.getFullYear(),base.getMonth(),base.getDate()+i,12);
   if(c.days.indexOf(d.getDay())<0)continue;shown++;var k=key(d),used=(cfg&&cfg.days&&cfg.days[k]||0)+queue.filter(function(q){return q.day===k}).length,full=c.limit>0&&used>=c.limit;
+  dc+='<button type="button" class="dc'+(full?' full':'')+'" data-pick="'+k+'">'+NAMES[d.getDay()]+' '+d.getDate()+'/'+(d.getMonth()+1)+'<b dir="ltr">'+used+(c.limit?'<small> / '+c.limit+'</small>':'')+'</b></button>';
   html+='<button type="button" class="chip'+(day===k?' on':'')+(full?' full':'')+'" data-day="'+k+'">'+NAMES[d.getDay()]+' '+d.getDate()+'/'+(d.getMonth()+1)+'<small>'+(full?'ممتلئ · ':'')+'<bdi dir="ltr">'+used+(c.limit?' / '+c.limit:'')+'</bdi></small></button>'}
- $('days').innerHTML=html;
+ $('days').innerHTML=html;$('dayCounts').innerHTML=dc;
  var t='',m=function(x){return +x.slice(0,2)*60+ +x.slice(3,5)};
  for(var s=m(c.from),e=m(c.to),g=0;s<e&&g<48;s+=c.slot,g++){var hh=Math.floor(s/60),mm=s%60,v=String(hh).padStart(2,'0')+':'+String(mm).padStart(2,'0'),h12=hh%12||12;
   t+='<button type="button" class="chip'+(time===v?' on':'')+'" data-time="'+v+'">'+h12+':'+String(mm).padStart(2,'0')+(hh>=12?' م':' ص')+'</button>'}
  $('times').innerHTML=t;}
- $('queue').innerHTML=queue.map(function(r,i){return '<div class="item"><span>'+esc(r.name)+' · '+esc(String(r.day).slice(5))+' '+esc(r.time||'')+'</span><button class="alt" data-del="'+i+'">✕</button></div>'}).join('')||'<div class="item">—</div>';
- $('sent').innerHTML=sent.map(function(r,i){return '<div class="item"><span><span class="ok">✓</span> '+esc(r.name)+' · '+esc(String(r.day).slice(5))+' '+esc(r.time||'')+'</span><button class="alt" data-again="'+i+'">إعادة</button></div>'}).join('')||'<div class="item">—</div>';
+ $('queue').innerHTML=queue.map(function(r,i){return '<div class="item"><span>'+esc(r.name)+' · '+esc(String(r.day).slice(5))+' '+esc(r.time||'')+'</span><button class="alt" data-del="'+i+'">✕</button></div>'}).join('')||'<div class="empty">مفيش · None</div>';
+ $('sent').innerHTML=sent.map(function(r,i){return '<div class="item"><span><span class="ok">✓</span> '+esc(r.name)+' · '+esc(String(r.day).slice(5))+' '+esc(r.time||'')+'</span><button class="alt" data-again="'+i+'">إعادة</button></div>'}).join('')||'<div class="empty">مفيش · None</div>';
 }
+function view(v){$('home').hidden=v!=='home';$('form').hidden=v!=='form';try{scrollTo(0,0)}catch(e){}if(v==='form')setTimeout(function(){$('name').focus()},60)}
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 document.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;
- if(b.dataset.day){day=b.dataset.day;render()}else if(b.dataset.time){time=time===b.dataset.time?'':b.dataset.time;render()}
+ if(b.dataset.pick){day=b.dataset.pick;time='';render();view('form')}else if(b.dataset.day){day=b.dataset.day;render()}else if(b.dataset.time){time=time===b.dataset.time?'':b.dataset.time;render()}
  else if(b.dataset.del){queue.splice(+b.dataset.del,1);store('bk_q',queue);render()}
  else if(b.dataset.again){var r=sent[+b.dataset.again];queue.push({uid:'u'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),name:r.name,phone:r.phone,age:r.age,day:r.day,time:r.time});store('bk_q',queue);render();flush()}});
 $('save').onclick=function(){var name=$('name').value.trim(),phone=$('phone').value.replace(/\D/g,''),age=parseInt($('age').value,10)||0;
  if(!name){toast('اكتب الاسم · Enter the name');return}if(!/^01[0125]\d{8}$/.test(phone)){toast('الموبايل لازم 11 رقم · Mobile must be 11 digits');return}
  if(!day){toast('اختار اليوم · Choose the day');return}
  queue.push({uid:'u'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),name:name,phone:phone,age:age,day:day,time:time});store('bk_q',queue);
- toast('اتحفظ · Saved: '+name);$('name').value='';$('phone').value='';$('age').value='';time='';render();flush()};
+ toast('اتحفظ · Saved: '+name);$('name').value='';$('phone').value='';$('age').value='';time='';day='';render();view('home');flush()};
 function tfetch(url,opt,ms){var c=new AbortController(),t=setTimeout(function(){c.abort()},ms||8000);opt=opt||{};opt.signal=c.signal;return fetch(url,opt).then(function(r){clearTimeout(t);return r},function(e){clearTimeout(t);throw e})}
 var fresh=false;window.addEventListener('beforeunload',function(e){if(!leaving&&!HOSTED&&(!online||queue.length)){e.preventDefault();e.returnValue=''}});
 function counts(){tfetch('/booking/counts',{cache:'no-store'},6000).then(function(r){if(r.status===401){loggedOut=true;showGate();return null}online=true;if(!fresh){fresh=true;fetch(location.pathname,{cache:'reload'}).catch(function(){})}return r.json()}).then(function(j){if(j){cfg=j;store('bk_cfg',cfg);loggedOut=false;$('gate').hidden=true;$('app').hidden=false}render()}).catch(function(){online=false;render()})}
-function showGate(){$('gate').hidden=false}
+function showGate(){$('gate').hidden=false;$('app').hidden=true;view('home')}
 var busy=false;
 function flush(){if(busy)return;if(!queue.length){if(goBack([]))return;counts();return}busy=true;
  tfetch('/booking',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items:queue})},10000).then(function(r){
@@ -114,5 +152,6 @@ else{$('sendNow').onclick=flush;if(/^https?:\/\//.test(ONLINE_URL)){var oc=$('of
 $('share').onclick=function(){if(!queue.length){toast('مفيش حاجة · Nothing to send');return}var text=queue.map(line).join('\n');
  if(navigator.share){navigator.share({text:text}).catch(function(){})}else{location.href='https://wa.me/?text='+encodeURIComponent(text)}};
 $('go').onclick=function(){tfetch('/login',{method:'POST',body:$('code').value.trim()},8000).then(function(r){if(r.ok){$('gate').hidden=true;flush()}else alert(r.status===429?'محاولات كتير، استنى دقيقة':'الكود غلط · Wrong code')})};
+$('newBtn').onclick=function(){view('form')};$('backBtn').onclick=function(){view('home')};
 purge();render();if(!HOSTED){flush();setInterval(flush,6000);window.addEventListener('online',flush);document.addEventListener('visibilitychange',function(){if(!document.hidden)flush()})}
 </script></main></body></html>
