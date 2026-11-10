@@ -13,7 +13,8 @@ button{cursor:pointer;border:0;font-weight:700;border-radius:14px}
 #net{font-size:13px;font-weight:600;color:var(--muted);display:flex;align-items:center;gap:6px;white-space:nowrap}#net::before{content:"";width:9px;height:9px;border-radius:50%;background:#B9C4C2}#net.on{color:var(--mint-d)}#net.on::before{background:var(--mint)}
 .bar{display:flex;align-items:center;gap:12px;background:var(--mint-l);color:var(--mint-d);border-radius:16px;padding:12px 14px;margin:4px 0 14px;font-weight:700;font-size:16px}
 .bar::before{content:"✓";display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--mint);color:#fff;flex:none}
-.bar.warn{background:var(--warn-l);color:var(--warn)}.bar.warn::before{content:"!";background:var(--warn)}.bar b{font-size:20px}
+.bar.out{background:var(--warn);color:#fff}.bar.out::before{content:"!";background:#fff;color:var(--warn)}.bar.in{background:var(--mint);color:#fff}.bar.in::before{background:#fff;color:var(--mint-d)}.bar small{display:block;font-weight:500;font-size:13px;opacity:.9}
+.wifi{display:flex;align-items:center;gap:12px;width:100%;text-align:start;background:#fff;border:2px solid var(--mint);color:var(--mint-d);padding:14px 16px;border-radius:18px;margin:0 0 14px;font-size:18px;box-shadow:0 10px 24px -14px rgba(31,168,132,.9)}.wifi i{font-style:normal;font-size:24px}.wifi small{display:block;color:var(--muted);font-weight:500;font-size:13px}.bar b{font-size:20px}
 .hint{background:#FFF6E6;border:1px solid #F3C979;border-radius:14px;padding:10px 12px;margin:0 0 12px;font-size:15px}
 .big{display:flex;align-items:center;gap:14px;width:100%;text-align:start;padding:20px 18px;margin:0 0 12px;font-size:21px;border-radius:20px}
 .big i{font-style:normal;display:grid;place-items:center;width:46px;height:46px;border-radius:14px;flex:none;font-size:24px}
@@ -45,6 +46,7 @@ label{display:block;font-size:14px;color:var(--muted);margin-top:12px;font-weigh
 <div id="home">
 <div class="top"><div class="brand"><img src="icon-192.png" alt="" onerror="this.remove()">حجز العيادة</div><span id="net"></span></div>
 <div class="bar" id="bar"><span id="barText"></span></div>
+<button class="wifi" id="wifi" type="button" hidden><i>📶</i><span>رجعتي العيادة؟ ابعتي الحجوزات<small>Back at the clinic? Send the bookings</small></span></button>
 <div class="hint" id="offHint" hidden>بره شبكة العيادة: متعملش Refresh. لو الصفحة اختفت، اقفل التاب وافتحها تاني من الأيقونة؛ الحجوزات محفوظة.</div>
 <div id="gate" class="gate" hidden><p>اكتب الكود الظاهر على كمبيوتر الدكتور · Enter the code shown on the doctor's computer</p>
 <input id="code" inputmode="numeric" maxlength="6" placeholder="000000" autocomplete="off"><button id="go">دخول · Enter</button></div>
@@ -91,8 +93,9 @@ function toast(t){var e=$('toast');e.textContent=t;e.style.display='block';setTi
 function purge(){var now=Date.now();sent=sent.filter(function(s){return now-s.sentAt<WEEK});store('bk_sent',sent)}
 function line(r){return [r.name,r.phone,r.age||0,r.day,r.time||'',r.uid].join(' | ')}
 function render(){
- var n=queue.length,bar=$('bar');bar.className='bar'+(n?' warn':'');
- $('barText').innerHTML=n?'<b>'+n+'</b> لسه ما اتبعتش · Unsent':'كله اتبعت · All sent';
+ var n=queue.length,bar=$('bar');bar.className='bar '+(online?'in':'out');
+ $('barText').innerHTML=online?(n?'جوه العيادة · <b>'+n+'</b> بيتبعتوا دلوقتي':'جوه العيادة · كله اتبعت')+'<small>'+(n?'Sending now':'Inside the clinic · all sent')+'</small>':'بره العيادة · '+(n?'<b>'+n+'</b> لسه ما اتبعتش':'الحجوزات بتتحفظ على الموبايل')+'<small>'+(n?'Outside the clinic · waiting to send':'Outside the clinic · saved on the phone')+'</small>';
+ var w=wifiNow();$('wifi').hidden=!(HOSTED&&n&&CLINIC&&w);
  $('net').className=online?'on':'';$('net').textContent=online?'متصل':(HOSTED?'نسخة من غير نت':'مش متصل');$('offHint').hidden=online||HOSTED;
  var c=cfg&&cfg.clinic?cfg.clinic:{days:[0,1,2,3,4,5,6],from:'16:00',to:'22:00',slot:30,limit:0};
  if(HOSTED&&!(cfg&&cfg.clinic)){$('days').innerHTML='<div class="hint">افتح النسخة دي من زرار نسخة تشتغل من غير نت في صفحة العيادة عشان تعرف أيام الشغل · Open this copy from the clinic page to get the working days</div>';$('times').innerHTML='';$('dayCounts').innerHTML='<div class="empty">—</div>';}else{
@@ -109,6 +112,7 @@ function render(){
  $('queue').innerHTML=queue.map(function(r,i){return '<div class="item"><span>'+esc(r.name)+' · '+esc(String(r.day).slice(5))+' '+esc(r.time||'')+'</span><button class="alt" data-del="'+i+'">✕</button></div>'}).join('')||'<div class="empty">مفيش · None</div>';
  $('sent').innerHTML=sent.map(function(r,i){return '<div class="item"><span><span class="ok">✓</span> '+esc(r.name)+' · '+esc(String(r.day).slice(5))+' '+esc(r.time||'')+'</span><button class="alt" data-again="'+i+'">إعادة</button></div>'}).join('')||'<div class="empty">مفيش · None</div>';
 }
+function wifiNow(){var c=navigator.connection;return !!(c&&c.type==='wifi')}
 function view(v){$('home').hidden=v!=='home';$('form').hidden=v!=='form';try{scrollTo(0,0)}catch(e){}if(v==='form')setTimeout(function(){$('name').focus()},60)}
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 document.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;
@@ -152,6 +156,6 @@ else{$('sendNow').onclick=flush;if(/^https?:\/\//.test(ONLINE_URL)){var oc=$('of
 $('share').onclick=function(){if(!queue.length){toast('مفيش حاجة · Nothing to send');return}var text=queue.map(line).join('\n');
  if(navigator.share){navigator.share({text:text}).catch(function(){})}else{location.href='https://wa.me/?text='+encodeURIComponent(text)}};
 $('go').onclick=function(){tfetch('/login',{method:'POST',body:$('code').value.trim()},8000).then(function(r){if(r.ok){$('gate').hidden=true;flush()}else alert(r.status===429?'محاولات كتير، استنى دقيقة':'الكود غلط · Wrong code')})};
-$('newBtn').onclick=function(){view('form')};$('backBtn').onclick=function(){view('home')};
+$('newBtn').onclick=function(){view('form')};$('wifi').onclick=function(){sendToClinic()};try{if(navigator.connection)navigator.connection.addEventListener('change',render)}catch(e){}window.addEventListener('online',render);$('backBtn').onclick=function(){view('home')};
 purge();render();if(!HOSTED){flush();setInterval(flush,6000);window.addEventListener('online',flush);document.addEventListener('visibilitychange',function(){if(!document.hidden)flush()})}
 </script></main></body></html>
